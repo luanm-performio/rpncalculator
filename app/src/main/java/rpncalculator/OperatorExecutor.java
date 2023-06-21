@@ -1,7 +1,6 @@
 package rpncalculator;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.util.Arrays;
 import java.util.function.Consumer;
 
@@ -21,7 +20,7 @@ public interface OperatorExecutor {
                 final String expression = result + " " + leftOperand + " " + rightOperand;
                 context.save(expression);
             } else {
-                logConsumer.accept("operator +");
+                throw new InsufficientParametersException();
             }
         };
     }
@@ -37,7 +36,7 @@ public interface OperatorExecutor {
                 final String expression = result + " " + leftOperand + " " + rightOperand;
                 context.save(expression);
             } else {
-                logConsumer.accept("operator -");
+                throw new InsufficientParametersException();
             }
         };
     }
@@ -53,7 +52,7 @@ public interface OperatorExecutor {
                 final String expression = result + " " + leftOperand + " " + rightOperand;
                 context.save(expression);
             } else {
-                logConsumer.accept("operator *");
+                throw new InsufficientParametersException();
             }
         };
     }
@@ -69,7 +68,7 @@ public interface OperatorExecutor {
                 final String expression = result + " " + leftOperand + " " + rightOperand;
                 context.save(expression);
             } else {
-                logConsumer.accept("operator /");
+                throw new InsufficientParametersException();
             }
         };
     }
@@ -84,7 +83,7 @@ public interface OperatorExecutor {
                 final String expression = result + " " + operand;
                 context.save(expression);
             } else {
-                logConsumer.accept("operator sqrt");
+                throw new InsufficientParametersException();
             }
         };
     }
@@ -105,7 +104,7 @@ public interface OperatorExecutor {
                     Arrays.stream(lastSaveAction.split(" ")).skip(1).map(BigDecimal::new).forEach(context::add);
                 }
             } else {
-                logConsumer.accept("operator undo");
+                throw new InsufficientParametersException();
             }
         };
     }
