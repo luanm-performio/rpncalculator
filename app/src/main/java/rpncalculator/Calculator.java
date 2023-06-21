@@ -7,21 +7,19 @@ import java.util.function.Consumer;
 
 public class Calculator {
 
-    private static final String DELIMITER = " ";
-
     private final CalculatorContext context;
     private final Consumer<String> logConsumer;
 
     public Calculator(final Consumer<String> logConsumer) {
         context = new CalculatorContext()
-                        .withPrecision(16)
-                        .withMaximumDisplayDecimalPlaces(10);
+                .withPrecision(16)
+                .withMaximumDisplayDecimalPlaces(10);
 
         this.logConsumer = logConsumer;
     }
 
     public void evaluate(final String input) {
-        final StringTokenizer tokenizer = new StringTokenizer(input, DELIMITER);
+        final StringTokenizer tokenizer = new StringTokenizer(input, CalculatorContext.DELIMITER);
         int position = 1;
 
         while (tokenizer.hasMoreTokens()) {
@@ -29,17 +27,22 @@ public class Calculator {
             final Optional<Operator> operatorOptional = Operator.ofLabel(token);
 
             if (operatorOptional.isPresent()) {
+
                 try {
                     operatorOptional.get().getExecutor().execute(context, logConsumer);
                 } catch (InsufficientParametersException e) {
-                    logConsumer.accept("operator " + operatorOptional.get().getLabel() + " (position: " + position + "): " + e.getMessage());
+                    logConsumer.accept(
+                        "operator " + operatorOptional.get().getLabel() + 
+                        " (position: " + position + "): " + 
+                        e.getMessage());
                     break;
                 }
+
             } else {
                 context.add(new BigDecimal(token, context.getMathContext()));
             }
 
-            position += DELIMITER.length() + token.length();
+            position += CalculatorContext.DELIMITER.length() + token.length();
         }
     }
 

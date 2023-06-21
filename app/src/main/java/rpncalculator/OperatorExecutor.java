@@ -17,7 +17,7 @@ public interface OperatorExecutor {
                 final BigDecimal leftOperand = context.pop();
                 final BigDecimal result = leftOperand.add(rightOperand, context.getMathContext());
                 context.add(result);
-                final String expression = result + " " + leftOperand + " " + rightOperand;
+                final String expression = result + CalculatorContext.DELIMITER + leftOperand + CalculatorContext.DELIMITER + rightOperand;
                 context.save(expression);
             } else {
                 throw new InsufficientParametersException();
@@ -33,7 +33,7 @@ public interface OperatorExecutor {
                 final BigDecimal leftOperand = context.pop();
                 final BigDecimal result = leftOperand.subtract(rightOperand, context.getMathContext());
                 context.add(result);
-                final String expression = result + " " + leftOperand + " " + rightOperand;
+                final String expression = result + CalculatorContext.DELIMITER + leftOperand + CalculatorContext.DELIMITER + rightOperand;
                 context.save(expression);
             } else {
                 throw new InsufficientParametersException();
@@ -49,7 +49,7 @@ public interface OperatorExecutor {
                 final BigDecimal leftOperand = context.pop();
                 final BigDecimal result = leftOperand.multiply(rightOperand, context.getMathContext());
                 context.add(result);
-                final String expression = result + " " + leftOperand + " " + rightOperand;
+                final String expression = result + CalculatorContext.DELIMITER + leftOperand + CalculatorContext.DELIMITER + rightOperand;
                 context.save(expression);
             } else {
                 throw new InsufficientParametersException();
@@ -65,7 +65,7 @@ public interface OperatorExecutor {
                 final BigDecimal leftOperand = context.pop();
                 final BigDecimal result = leftOperand.divide(rightOperand, context.getMathContext());
                 context.add(result);
-                final String expression = result + " " + leftOperand + " " + rightOperand;
+                final String expression = result + CalculatorContext.DELIMITER + leftOperand + CalculatorContext.DELIMITER + rightOperand;
                 context.save(expression);
             } else {
                 throw new InsufficientParametersException();
@@ -80,7 +80,7 @@ public interface OperatorExecutor {
                 final BigDecimal operand = context.pop();
                 final BigDecimal result = operand.sqrt(context.getMathContext());
                 context.add(result);
-                final String expression = result + " " + operand;
+                final String expression = result + CalculatorContext.DELIMITER + operand;
                 context.save(expression);
             } else {
                 throw new InsufficientParametersException();
@@ -100,8 +100,8 @@ public interface OperatorExecutor {
             if (context.numberOfOperands() > 0) {
                 final BigDecimal lastOperand = context.pop();
                 final String lastSaveAction = context.popLastSave().orElse("");
-                if (lastSaveAction.startsWith(lastOperand + " ")) {
-                    Arrays.stream(lastSaveAction.split(" ")).skip(1).map(BigDecimal::new).forEach(context::add);
+                if (lastSaveAction.startsWith(lastOperand + CalculatorContext.DELIMITER)) {
+                    Arrays.stream(lastSaveAction.split(CalculatorContext.DELIMITER)).skip(1).map(BigDecimal::new).forEach(context::add);
                 }
             } else {
                 throw new InsufficientParametersException();

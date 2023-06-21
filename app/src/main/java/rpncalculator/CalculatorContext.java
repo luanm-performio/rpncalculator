@@ -9,7 +9,7 @@ import java.util.Stack;
 import java.util.stream.Collectors;
 
 public class CalculatorContext {
-    private static final String DELIMITER = " ";
+    public static final String DELIMITER = " ";
     private final Stack<BigDecimal> stack;
     private final Stack<String> undoOperatorStack;
     private MathContext mathContext;
@@ -18,6 +18,8 @@ public class CalculatorContext {
     public CalculatorContext() {
         stack = new Stack<>();
         undoOperatorStack = new Stack<>();
+
+        withPrecision(16).withMaximumDisplayDecimalPlaces(10);
     }
 
     public CalculatorContext withPrecision(final int precision) {
@@ -37,7 +39,7 @@ public class CalculatorContext {
 
     public void add(final BigDecimal operand) {
         stack.add(operand);
-        undoOperatorStack.add(operand + " ");
+        undoOperatorStack.add(operand + DELIMITER);
     }
 
     public BigDecimal pop() {
@@ -54,7 +56,7 @@ public class CalculatorContext {
 
     public String toString() {
         final String stackInformation = stack.stream().map(numberFormatter::format).collect(Collectors.joining(DELIMITER));
-        return "stack:" + ("".equals(stackInformation) ? "" : " " + stackInformation);
+        return "stack:" + ("".equals(stackInformation) ? "" : DELIMITER + stackInformation);
     }
 
     public void save(final String expression) {
