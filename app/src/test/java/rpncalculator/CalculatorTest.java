@@ -6,7 +6,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class CalculatorTest {
 
@@ -21,61 +20,53 @@ class CalculatorTest {
 
     @Test
     public void shouldEvaluateSimpleInputString() {
-        calculator.evaluate("5 2");
-        calculator.printCurrentState();
-
+        evaluate("5 2");
         assertThat(output).hasToString("stack: 5 2");
     }
 
     @Test
     public void shouldEvaluateMoreThanOneInputStringsWithOperatorCase1() {
-        calculator.evaluate("2 sqrt");
-        calculator.printCurrentState();
-        assertThat(output).hasToString("stack: 1.4142135623");
-        output.setLength(0);
+        evaluate("2 sqrt");
+        assertThatOutputHasToString("stack: 1.4142135623");
 
-        calculator.evaluate("clear 9 sqrt");
-        calculator.printCurrentState();
+        evaluate("clear 9 sqrt");
         assertThat(output).hasToString("stack: 3");
     }
 
     @Test
     public void shouldEvaluateMoreThanOneInputStringsWithOperatorCase2() {
-        calculator.evaluate("5 2 -");
-        calculator.printCurrentState();
-        assertThat(output).hasToString("stack: 3");
-        output.setLength(0);
+        evaluate("5 2 -");
+        assertThatOutputHasToString("stack: 3");
 
-        calculator.evaluate("3 -");
-        calculator.printCurrentState();
-        assertThat(output).hasToString("stack: 0");
+        evaluate("3 -");
+        assertThatOutputHasToString("stack: 0");
 
-        output.setLength(0);
-        calculator.evaluate("clear");
-        calculator.printCurrentState();
+        evaluate("clear");
         assertThat(output).hasToString("stack: ");
     }
 
     @Test
     public void shouldEvaluateMoreThanOneInputStringsWithOperatorCase3() {
-        calculator.evaluate("5 4 3 2");
-        calculator.printCurrentState();
-        assertThat(output).hasToString("stack: 5 4 3 2");
-        output.setLength(0);
+        evaluate("5 4 3 2");
+        assertThatOutputHasToString("stack: 5 4 3 2");
 
-        calculator.evaluate("undo undo *");
-        calculator.printCurrentState();
-        assertThat(output).hasToString("stack: 20");
+        evaluate("undo undo *");
+        assertThatOutputHasToString("stack: 20");
 
-        output.setLength(0);
-        calculator.evaluate("5 *");
-        calculator.printCurrentState();
-        assertThat(output).hasToString("stack: 100");
+        evaluate("5 *");
+        assertThatOutputHasToString("stack: 100");
 
-        output.setLength(0);
-        calculator.evaluate("undo");
-        calculator.printCurrentState();
+        evaluate("undo");
         assertThat(output).hasToString("stack: 20 5");
     }
 
+    private void evaluate(String input) {
+        calculator.evaluate(input);
+        calculator.printCurrentState();
+    }
+
+    private void assertThatOutputHasToString(String expectedToString) {
+        assertThat(output).hasToString(expectedToString);
+        output.setLength(0);
+    }
 }
