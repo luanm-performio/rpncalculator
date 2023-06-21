@@ -94,10 +94,9 @@ class CalculatorTest {
     }
 
     @Test
-    @Disabled("Not yet covered")
     public void shouldEvaluateMoreThanOneInputStringsWithOperatorCase8() {
         evaluate("1 2 3 * 5 + * * 6 5");
-        assertThatOutputHasToString("operator * (position: 15): insufficient parameters\nstack: 11");
+        assertThatOutputHasToString("operator * (position: 15): insufficient parametersstack: 11");
     }
 
     private void evaluate(String input) {
