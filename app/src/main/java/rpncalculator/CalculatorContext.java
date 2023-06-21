@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Stack;
 import java.util.stream.Collectors;
@@ -13,17 +12,32 @@ public class CalculatorContext {
     private static final String DELIMITER = " ";
     private final Stack<BigDecimal> stack;
     private final Stack<String> undoOperatorStack;
-    private final MathContext mathContext;
+    private MathContext mathContext;
+    private DecimalFormat numberFormatter;
 
     public CalculatorContext() {
         stack = new Stack<>();
         undoOperatorStack = new Stack<>();
-        mathContext = new MathContext(16);
+    }
+
+    public CalculatorContext withPrecision(final int precision) {
+        this.mathContext = new MathContext(precision);
+
+        return this;
+    }
+
+    public CalculatorContext withMaximumDisplayDecimalPlaces(final int displayDecimalPlaces) {
+        numberFormatter = new DecimalFormat();
+        numberFormatter.setRoundingMode(RoundingMode.FLOOR);
+        numberFormatter.setMaximumFractionDigits(displayDecimalPlaces);
+        numberFormatter.setMinimumFractionDigits(0);
+
+        return this;
     }
 
     public void add(final BigDecimal operand) {
-
         stack.add(operand);
+        undoOperatorStack.add(operand + " ");
     }
 
     public BigDecimal pop() {
@@ -39,11 +53,8 @@ public class CalculatorContext {
     }
 
     public String toString() {
-        final DecimalFormat df = new DecimalFormat();
-        df.setRoundingMode(RoundingMode.FLOOR);
-        df.setMaximumFractionDigits(10);
-        df.setMinimumFractionDigits(0);
-        return "stack: " + stack.stream().map(df::format).collect(Collectors.joining(DELIMITER));
+        final String stackInformation = stack.stream().map(numberFormatter::format).collect(Collectors.joining(DELIMITER));
+        return "stack:" + ("".equals(stackInformation) ? "" : " " + stackInformation);
     }
 
     public void save(final String expression) {
