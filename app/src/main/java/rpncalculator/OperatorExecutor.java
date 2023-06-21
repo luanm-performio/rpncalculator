@@ -12,6 +12,7 @@ public interface OperatorExecutor {
 
     static OperatorExecutor plus() {
         return (context, logConsumer) -> {
+
             if (context.numberOfOperands() > 1) {
                 final BigDecimal rightOperand = context.pop();
                 final BigDecimal leftOperand = context.pop();
@@ -27,6 +28,7 @@ public interface OperatorExecutor {
 
     static OperatorExecutor minus() {
         return (context, logConsumer) -> {
+
             if (context.numberOfOperands() > 1) {
                 final BigDecimal rightOperand = context.pop();
                 final BigDecimal leftOperand = context.pop();
@@ -42,6 +44,7 @@ public interface OperatorExecutor {
 
     static OperatorExecutor multiply() {
         return (context, logConsumer) -> {
+
             if (context.numberOfOperands() > 1) {
                 final BigDecimal rightOperand = context.pop();
                 final BigDecimal leftOperand = context.pop();
@@ -57,6 +60,7 @@ public interface OperatorExecutor {
 
     static OperatorExecutor divide() {
         return (context, logConsumer) -> {
+
             if (context.numberOfOperands() > 1) {
                 final BigDecimal rightOperand = context.pop();
                 final BigDecimal leftOperand = context.pop();
@@ -72,6 +76,7 @@ public interface OperatorExecutor {
 
     static OperatorExecutor squareRoot() {
         return (context, logConsumer) -> {
+
             if (context.numberOfOperands() > 0) {
                 final BigDecimal operand = context.pop();
                 final BigDecimal result = operand.sqrt(context.getMathContext());
@@ -98,8 +103,6 @@ public interface OperatorExecutor {
                 final String lastSaveAction = context.popLastSave().orElse("");
                 if (lastSaveAction.startsWith(lastOperand + " ")) {
                     Arrays.stream(lastSaveAction.split(" ")).skip(1).map(BigDecimal::new).forEach(context::add);
-                } else {
-                    context.save(lastSaveAction);
                 }
             } else {
                 logConsumer.accept("operator undo");
