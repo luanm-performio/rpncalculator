@@ -48,6 +48,7 @@ public class CalculatorContext {
 
     public void clear() {
         stack.clear();
+        undoOperatorStack.clear();
     }
 
     public int numberOfOperands() {
