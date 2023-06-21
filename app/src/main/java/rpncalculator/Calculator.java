@@ -1,6 +1,7 @@
 package rpncalculator;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 import java.util.StringTokenizer;
 import java.util.function.Consumer;
 
@@ -12,7 +13,10 @@ public class Calculator {
     private final Consumer<String> logConsumer;
 
     public Calculator(final Consumer<String> logConsumer) {
-        context = new CalculatorContext();
+        context = new CalculatorContext()
+                        .withPrecision(16)
+                        .withMaximumDisplayDecimalPlaces(10);
+
         this.logConsumer = logConsumer;
     }
 
@@ -21,9 +25,12 @@ public class Calculator {
 
         while (tokenizer.hasMoreTokens()) {
             final String token = tokenizer.nextToken();
-            Operator.ofLabel(token).ifPresentOrElse(
-                    operator -> operator.getExecutor().execute(context, logConsumer),
-                    () -> context.add(new BigDecimal(token, context.getMathContext())));
+            final Optional<Operator> operatorOptional = Operator.ofLabel(token);
+            if (operatorOptional.isPresent()) {
+                operatorOptional.get().getExecutor().execute(context, logConsumer);
+            } else {
+                context.add(new BigDecimal(token, context.getMathContext()));
+            }
         }
     }
 
