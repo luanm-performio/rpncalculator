@@ -6,6 +6,8 @@ import java.util.function.Consumer;
 
 public class Calculator {
 
+    private static final String DELIMITER = " ";
+
     private final CalculatorContext context;
     private final Consumer<String> logConsumer;
 
@@ -15,7 +17,7 @@ public class Calculator {
     }
 
     public void evaluate(final String input) {
-        final StringTokenizer tokenizer = new StringTokenizer(input, " ");
+        final StringTokenizer tokenizer = new StringTokenizer(input, DELIMITER);
 
         while (tokenizer.hasMoreTokens()) {
             final String token = tokenizer.nextToken();
