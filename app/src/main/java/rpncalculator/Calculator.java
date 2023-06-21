@@ -22,15 +22,24 @@ public class Calculator {
 
     public void evaluate(final String input) {
         final StringTokenizer tokenizer = new StringTokenizer(input, DELIMITER);
+        int position = 1;
 
         while (tokenizer.hasMoreTokens()) {
             final String token = tokenizer.nextToken();
             final Optional<Operator> operatorOptional = Operator.ofLabel(token);
+
             if (operatorOptional.isPresent()) {
-                operatorOptional.get().getExecutor().execute(context, logConsumer);
+                try {
+                    operatorOptional.get().getExecutor().execute(context, logConsumer);
+                } catch (InsufficientParametersException e) {
+                    logConsumer.accept("operator " + operatorOptional.get().getLabel() + " (position: " + position + "): " + e.getMessage());
+                    break;
+                }
             } else {
                 context.add(new BigDecimal(token, context.getMathContext()));
             }
+
+            position += DELIMITER.length() + token.length();
         }
     }
 
