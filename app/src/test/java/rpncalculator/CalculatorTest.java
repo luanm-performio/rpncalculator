@@ -19,13 +19,13 @@ class CalculatorTest {
     }
 
     @Test
-    public void shouldEvaluateSimpleInputString() {
+    public void shouldEvaluateSimpleInputStringCase1() {
         evaluate("5 2");
-        assertThat(output).hasToString("stack: 5 2");
+        assertThatOutputHasToString("stack: 5 2");
     }
 
     @Test
-    public void shouldEvaluateMoreThanOneInputStringsWithOperatorCase1() {
+    public void shouldEvaluateMoreThanOneInputStringsWithOperatorCase2() {
         evaluate("2 sqrt");
         assertThatOutputHasToString("stack: 1.4142135623");
 
@@ -34,7 +34,7 @@ class CalculatorTest {
     }
 
     @Test
-    public void shouldEvaluateMoreThanOneInputStringsWithOperatorCase2() {
+    public void shouldEvaluateMoreThanOneInputStringsWithOperatorCase3() {
         evaluate("5 2 -");
         assertThatOutputHasToString("stack: 3");
 
@@ -42,11 +42,11 @@ class CalculatorTest {
         assertThatOutputHasToString("stack: 0");
 
         evaluate("clear");
-        assertThat(output).hasToString("stack: ");
+        assertThat(output).hasToString("stack:");
     }
 
     @Test
-    public void shouldEvaluateMoreThanOneInputStringsWithOperatorCase3() {
+    public void shouldEvaluateMoreThanOneInputStringsWithOperatorCase4() {
         evaluate("5 4 3 2");
         assertThatOutputHasToString("stack: 5 4 3 2");
 
@@ -58,6 +58,46 @@ class CalculatorTest {
 
         evaluate("undo");
         assertThat(output).hasToString("stack: 20 5");
+    }
+
+    @Test
+    public void shouldEvaluateMoreThanOneInputStringsWithOperatorCase5() {
+        evaluate("7 12 2 /");
+        assertThatOutputHasToString("stack: 7 6");
+
+        evaluate("*");
+        assertThatOutputHasToString("stack: 42");
+
+        evaluate("4 /");
+        assertThatOutputHasToString("stack: 10.5");
+    }
+
+    @Test
+    public void shouldEvaluateMoreThanOneInputStringsWithOperatorCase6() {
+        evaluate("1 2 3 4 5");
+        assertThatOutputHasToString("stack: 1 2 3 4 5");
+
+        evaluate("*");
+        assertThatOutputHasToString("stack: 1 2 3 20");
+
+        evaluate("clear 3 4 -");
+        assertThatOutputHasToString("stack: -1");
+    }
+
+    @Test
+    public void shouldEvaluateMoreThanOneInputStringsWithOperatorCase7() {
+        evaluate("1 2 3 4 5");
+        assertThatOutputHasToString("stack: 1 2 3 4 5");
+
+        evaluate("* * * *");
+        assertThatOutputHasToString("stack: 120");
+    }
+
+    @Test
+    @Disabled("Not yet covered")
+    public void shouldEvaluateMoreThanOneInputStringsWithOperatorCase8() {
+        evaluate("1 2 3 * 5 + * * 6 5");
+        assertThatOutputHasToString("operator * (position: 15): insufficient parameters\nstack: 11");
     }
 
     private void evaluate(String input) {
