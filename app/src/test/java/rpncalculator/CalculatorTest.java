@@ -101,7 +101,7 @@ class CalculatorTest {
 
     private void evaluate(String input) {
         calculator.evaluate(input);
-        calculator.printCurrentState();
+        calculator.saveCurrentStateToLog();
     }
 
     private void assertThatOutputHasToString(String expectedToString) {

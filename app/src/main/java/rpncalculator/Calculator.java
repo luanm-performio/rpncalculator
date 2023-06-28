@@ -46,7 +46,7 @@ public class Calculator {
         }
     }
 
-    public void printCurrentState() {
+    public void saveCurrentStateToLog() {
         logConsumer.accept(context.toString());
     }
 }

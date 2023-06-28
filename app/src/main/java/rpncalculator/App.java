@@ -14,7 +14,7 @@ public class App {
                     System.exit(0);
                 }
                 calculator.evaluate(expression);
-                calculator.printCurrentState();
+                calculator.saveCurrentStateToLog();
             }
         }
     }
