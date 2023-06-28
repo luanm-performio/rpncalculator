@@ -2,15 +2,14 @@ package rpncalculator;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
-import java.util.function.Consumer;
 
 @FunctionalInterface
 public interface OperatorExecutor {
 
-    void execute(final CalculatorContext context, final Consumer<String> logConsumer);
+    void execute(final CalculatorContext context);
 
     static OperatorExecutor plus() {
-        return (context, logConsumer) -> {
+        return (context) -> {
 
             if (context.numberOfOperands() > 1) {
                 final BigDecimal rightOperand = context.pop();
@@ -26,7 +25,7 @@ public interface OperatorExecutor {
     }
 
     static OperatorExecutor minus() {
-        return (context, logConsumer) -> {
+        return (context) -> {
 
             if (context.numberOfOperands() > 1) {
                 final BigDecimal rightOperand = context.pop();
@@ -42,7 +41,7 @@ public interface OperatorExecutor {
     }
 
     static OperatorExecutor multiply() {
-        return (context, logConsumer) -> {
+        return (context) -> {
 
             if (context.numberOfOperands() > 1) {
                 final BigDecimal rightOperand = context.pop();
@@ -58,7 +57,7 @@ public interface OperatorExecutor {
     }
 
     static OperatorExecutor divide() {
-        return (context, logConsumer) -> {
+        return (context) -> {
 
             if (context.numberOfOperands() > 1) {
                 final BigDecimal rightOperand = context.pop();
@@ -74,7 +73,7 @@ public interface OperatorExecutor {
     }
 
     static OperatorExecutor squareRoot() {
-        return (context, logConsumer) -> {
+        return (context) -> {
 
             if (context.numberOfOperands() > 0) {
                 final BigDecimal operand = context.pop();
@@ -89,13 +88,13 @@ public interface OperatorExecutor {
     }
 
     static OperatorExecutor clear() {
-        return (context, logConsumer) -> {
+        return (context) -> {
             context.clear();
         };
     }
 
     static OperatorExecutor undo() {
-        return (context, logConsumer) -> {
+        return (context) -> {
 
             if (context.numberOfOperands() > 0) {
                 final BigDecimal lastOperand = context.pop();

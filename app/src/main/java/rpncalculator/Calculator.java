@@ -29,7 +29,7 @@ public class Calculator {
             if (operatorOptional.isPresent()) {
 
                 try {
-                    operatorOptional.get().getExecutor().execute(context, logConsumer);
+                    operatorOptional.get().getExecutor().execute(context);
                 } catch (InsufficientParametersException e) {
                     logConsumer.accept(
                         "operator " + operatorOptional.get().getLabel() + 
